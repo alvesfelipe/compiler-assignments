@@ -1,5 +1,5 @@
 #!/usr/bin/python
-#Deterministic finite accepter
+#Deterministic finite automaton accepter
 
 #some symbols of alphabet
 alphabet_symbols = ['+', '-', '/', '*']
