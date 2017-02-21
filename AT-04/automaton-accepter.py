@@ -1,8 +1,6 @@
 #!/usr/bin/python
 #Deterministic finite state machine implementation
 
-import sys
-
 #some symbols of alphabet
 alphabet_symbols = ['+', '-', '/', '*']
 alphabet_float = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.']
@@ -35,4 +33,3 @@ if any(list_str[0] == element_symb for element_symb in alphabet_symbols):
 	check_symbols(list_str)
 else:
 	check_is_float(list_str)
-
