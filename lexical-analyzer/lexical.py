@@ -62,6 +62,12 @@ def isToken(token):
 	for key in token_type:
 		if any(token == value for value in token_type[key]):
 			return (token, key)
+	if isInt(token):
+		return (token, "Integer")
+	if isFloat(token):
+		return (token, "Float")
+	if isIdentifier(token):
+		return (token, "Identifier")
 	return None
 
 print "Is Token: ", isToken(number_test)
