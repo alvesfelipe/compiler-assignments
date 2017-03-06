@@ -9,7 +9,6 @@ import sys
 key_words = ['program', 'var', 'integer', 'real',
 			 'boolean', 'procedure', 'begin', 'end',
 			 'if', 'then', 'else', 'while', 'do', 'not']
-numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 delimiters = [';', '.', ':', '(', ')', ',']
 assignment = [':=']
 relational_operators = ['=', '<', '>', '<=', '>=', '<>']
@@ -17,8 +16,16 @@ aditive_operators = ['+', '-', 'or']
 multiplicative_operators = ['*', '/', 'and']
 #end token arrays
 
+token_type = {'Key Word': key_words,
+		  'Deimiter': delimiters,
+		  'Assignment': assignment,
+		  'Relational Operator': relational_operators,
+		  'Aditive Operator': aditive_operators,
+		  'Multiplicative Operator': multiplicative_operators
+		 }
+
 number_test = '10.0'
-token_test = 'program'
+token_test = '+'
 
 #auxiliary function, used for check if the specific element of string is contained on a specific symbol list
 def aux_check(symbol, list_symbol):
@@ -43,20 +50,29 @@ def isFloat(str):
 
 #check if the token is a key word
 def isKeyWord(str):
-	if(aux_check(str, key_words)):
+	if(aux_check(str, token_type['Key Word'])):
 		return True
 	else:
 		return False
 
-print "inteiro? ", isInt(number_test)
-print "float? ", isFloat(number_test)
-print "is keyword? ", isKeyWord(token_test)
+#check if the token is a key word
+def isToken(token):
+	for key in token_type:
+		if any(token == value for value in token_type[key]):
+			return (token, key)
+	return None
+
+print "Is Integer: ", isInt(number_test)
+print "Is Float: ", isFloat(number_test)
+print "Is Key Word: ", isToken(token_test)
 
 #read file, split by line and put in a list
 with open(sys.argv[1], 'r') as my_file: list_file = my_file.read().splitlines()
 
+#removing unused elements
+list_file = [s.replace('\t', '') for s in list_file]
 #get the number of lines
-print len(list_file)
+print "Lines: ", len(list_file)
 
 
 print list_file
