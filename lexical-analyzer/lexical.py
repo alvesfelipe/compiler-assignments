@@ -31,6 +31,12 @@ number_test = 'aasdf123sd'
 token_test = 'procedureasdf'
 ident_test = 'AAa066_'
 
+def removeTrash(str):
+	removed = str.replace('\t', '')
+	removed = re.sub(r'\{.*?\}', '', removed)
+
+	return removed
+
 #check if the toen is an identifier
 def isIdentifier(str):
 	identifiers = re.compile('^[a-zA-Z][a-zA-Z0-9_]*$')
@@ -57,7 +63,7 @@ def isFloat(str):
 	except ValueError:
 		return False
 
-#check if the token is a key word
+#check if the string is a token
 def isToken(token):
 	for key in token_type:
 		if any(token == value for value in token_type[key]):
@@ -70,14 +76,19 @@ def isToken(token):
 		return (token, "Identifier")
 	return None
 
-print "Is Token: ", isToken(number_test)
+
+# print "Is Token: ", isToken(number_test)
 
 #read file, split by line and put in a list
-with open(sys.argv[1], 'r') as my_file: list_file = my_file.read().splitlines()
+with open(sys.argv[1], 'r') as my_file:
+	file = my_file.read()
 #removing unused elements
-list_file = [s.replace('\t', '') for s in list_file]
+file = removeTrash(file)
+#split file by lines
+list_file = file.splitlines()
+print list_file
 #get the number of lines
 print "Lines: ", len(list_file)
 
-
-print list_file
+for line in list_file:
+	print line.split()
