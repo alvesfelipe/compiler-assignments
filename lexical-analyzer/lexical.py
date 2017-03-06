@@ -4,6 +4,7 @@ __author__ = "Felipe Alves"
 __email__ = "felipealves@lavid.ufpb.br"
 
 import sys
+import re
 
 #token arrays
 key_words = ['program', 'var', 'integer', 'real',
@@ -16,6 +17,7 @@ aditive_operators = ['+', '-', 'or']
 multiplicative_operators = ['*', '/', 'and']
 #end token arrays
 
+#defining dictionary with toke type (key) and token array (value)
 token_type = {'Key Word': key_words,
 		  'Deimiter': delimiters,
 		  'Assignment': assignment,
@@ -23,14 +25,21 @@ token_type = {'Key Word': key_words,
 		  'Aditive Operator': aditive_operators,
 		  'Multiplicative Operator': multiplicative_operators
 		 }
+#end dictionary
 
-number_test = '10.0'
-token_test = '+'
+number_test = 'aasdf123sd'
+token_test = 'procedureasdf'
+ident_test = 'AAa066_'
 
-#auxiliary function, used for check if the specific element of string is contained on a specific symbol list
-def aux_check(symbol, list_symbol):
-	if any(symbol == element_symb for element_symb in list_symbol):
+#check if the toen is an identifier
+def isIdentifier(str):
+	identifiers = re.compile('^[a-zA-Z][a-zA-Z0-9_]*$')
+	result = identifiers.match(str)
+
+	if result:
 		return True
+	else:
+		return False
 
 #check if the token is an integer
 def isInt(str):
@@ -49,26 +58,16 @@ def isFloat(str):
 		return False
 
 #check if the token is a key word
-def isKeyWord(str):
-	if(aux_check(str, token_type['Key Word'])):
-		return True
-	else:
-		return False
-
-#check if the token is a key word
 def isToken(token):
 	for key in token_type:
 		if any(token == value for value in token_type[key]):
 			return (token, key)
 	return None
 
-print "Is Integer: ", isInt(number_test)
-print "Is Float: ", isFloat(number_test)
-print "Is Key Word: ", isToken(token_test)
+print "Is Token: ", isToken(number_test)
 
 #read file, split by line and put in a list
 with open(sys.argv[1], 'r') as my_file: list_file = my_file.read().splitlines()
-
 #removing unused elements
 list_file = [s.replace('\t', '') for s in list_file]
 #get the number of lines
