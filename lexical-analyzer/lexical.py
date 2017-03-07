@@ -111,34 +111,43 @@ def identifySpecialTokens(str, line):
 			return str
 	return str
 
-# print "Is Token: ", isToken(number_test)
-# writeInTable(isToken(number_test))
+#function responsible for make the analyse of the input file, receive a list of all lines
+def lexicalAnalysis(list_file):
+	for index, line in enumerate(list_file):
+		list_file[index] = identifySpecialTokens(line, str(index + 1))
+		list_file[index] = spaceSimpleOperator(list_file[index], delimiters + relational_operators + 
+											   aditive_operators + multiplicative_operators)
+
+	for index, line in enumerate(list_file):
+		for token in line.split():
+			aux = isToken(token)
+			if aux is not None:
+				writeInTable(aux + (str(index + 1),))
+			else:
+				print "ERROR"
+				return
+	print "LEXICAL ANALYSIS SUCCESS"
+
 
 #read file, split by line and put in a string
 with open(sys.argv[1], 'r') as my_file:
 	file = my_file.read()
-
 #removing unused elements
 file = removeTrash(file)
-
 #split file by lines
 list_file = file.splitlines()
-print list_file
+
+# print list_file
+lexicalAnalysis(list_file)
+# print list_file
+
+#DEBUG PRINTS
+# #get the number of lines
+# print "-------------->Lines:", len(list_file)
 # token_test = spaceSimpleOperator(token_test, delimiters)
 # print "Token: ", token_test
 # token_test = identifySpecialTokens(token_test, '1')
 # print "Token: ", token_test
 # insertRelationalSpace(token_test)
-
-#get the number of lines
-print "-------------->Lines:", len(list_file)
-for index, line in enumerate(list_file):
-	# print line
-	list_file[index] = identifySpecialTokens(line, str(index))
-	list_file[index] = spaceSimpleOperator(list_file[index], delimiters + relational_operators + 
-										   aditive_operators + multiplicative_operators)
-
-for index, line in enumerate(list_file):
-	print list_file[index]
-
-print list_file
+# print "Is Token: ", isToken(number_test)
+# writeInTable(isToken(number_test))
