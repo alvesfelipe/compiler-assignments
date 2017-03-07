@@ -6,29 +6,34 @@ __email__ = "felipealves@lavid.ufpb.br"
 import sys
 import re
 
-#token arrays
+#token lists
 key_words = ['program', 'var', 'integer', 'real',
 			 'boolean', 'procedure', 'begin', 'end',
 			 'if', 'then', 'else', 'while', 'do', 'not']
 delimiters = [';', '.', ':', '(', ')', ',']
 assignment = [':=']
-relational_operators = ['=', '<', '>', '<=', '>=', '<>']
-aditive_operators = ['+', '-', 'or']
-multiplicative_operators = ['*', '/', 'and']
-#end token arrays
+relational_operators = ['=', '<', '>']
+relational_operators_2 = ['<=', '>=', '<>']
+aditive_operators = ['+', '-']
+multiplicative_operators = ['*', '/']
+special_operators = ['or', 'and']
+#end token lists
 
-#defining dictionary with toke type (key) and token array (value)
+#defining dictionary with toke type (key) and token list (value)
 token_type = {'Key Word': key_words,
-		  'Deimiter': delimiters,
+		  'Delimiter': delimiters,
 		  'Assignment': assignment,
-		  'Relational Operator': relational_operators,
-		  'Aditive Operator': aditive_operators,
-		  'Multiplicative Operator': multiplicative_operators
+		  'Operator': relational_operators + relational_operators_2 + 
+		  			  aditive_operators + multiplicative_operators + special_operators
+		  # 'Relational Operator': relational_operators,
+		  # 'Aditive Operator': aditive_operators,
+		  # 'Multiplicative Operator': multiplicative_operators,
+		  # 'Special Operator': special_operators
 		 }
 #end dictionary
 
 number_test = 'aasdf123sd'
-token_test = 'procedureasdf'
+token_test = 'v <=1;v <=1; valor1: integer;'
 ident_test = 'AAa066_'
 
 def removeTrash(str):
@@ -76,19 +81,36 @@ def isToken(token):
 		return (token, "Identifier")
 	return None
 
+def spaceSimpleOperator(str, token_list):
+	print "STRING:", str
+	for i in token_list:
+		for ap in range(str.count(i)):
+			print ap
+			indices = [ind for ind, x in enumerate(str) if x == i]
+			print "Indices:", indices
+			if indices:
+				aux = indices[ap]
+				str = str[:aux] + ' ' + str[aux:]
+				str = str[:aux+2] + ' ' + str[aux+2:]
+				print "RES:", str.split()
 
 # print "Is Token: ", isToken(number_test)
 
-#read file, split by line and put in a list
+#read file, split by line and put in a string
 with open(sys.argv[1], 'r') as my_file:
 	file = my_file.read()
+
 #removing unused elements
 file = removeTrash(file)
+
 #split file by lines
 list_file = file.splitlines()
 print list_file
+spaceSimpleOperator(token_test, delimiters)
+# insertRelationalSpace(token_test)
 #get the number of lines
-print "Lines: ", len(list_file)
+print "-------------->Lines:", len(list_file)
 
-for line in list_file:
-	print line.split()
+# print list_file
+# for line in list_file:
+	# print line.split()
