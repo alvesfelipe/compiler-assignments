@@ -81,18 +81,16 @@ def isToken(token):
 		return (token, "Identifier")
 	return None
 
+#function for add spaces between simple tokens like: ;, :, . 
 def spaceSimpleOperator(str, token_list):
-	print "STRING:", str
 	for i in token_list:
 		for ap in range(str.count(i)):
-			print ap
 			indices = [ind for ind, x in enumerate(str) if x == i]
-			print "Indices:", indices
 			if indices:
 				aux = indices[ap]
 				str = str[:aux] + ' ' + str[aux:]
 				str = str[:aux+2] + ' ' + str[aux+2:]
-				print "RES:", str.split()
+	return str			
 
 # print "Is Token: ", isToken(number_test)
 
@@ -106,7 +104,8 @@ file = removeTrash(file)
 #split file by lines
 list_file = file.splitlines()
 print list_file
-spaceSimpleOperator(token_test, delimiters)
+token_test = spaceSimpleOperator(token_test, delimiters)
+print token_test
 # insertRelationalSpace(token_test)
 #get the number of lines
 print "-------------->Lines:", len(list_file)
