@@ -36,6 +36,14 @@ number_test = 'aasdf123sd'
 token_test = 'v <=1;v <=1; valor1: integer;'
 ident_test = 'AAa066_'
 
+def writeInTable(listTuple):
+	f = open('files/outTable.txt', 'a')
+	for t in listTuple:
+		line=''.join(str(x) for x in t)
+		f.write(line + ' ')
+	f.write('\n')
+	f.close()
+
 def removeTrash(str):
 	removed = str.replace('\t', '')
 	removed = re.sub(r'\{.*?\}', '', removed)
@@ -92,7 +100,19 @@ def spaceSimpleOperator(str, token_list):
 				str = str[:aux+2] + ' ' + str[aux+2:]
 	return str			
 
+#function for identify special tokens, remove and return a new string.
+#And write in a table (token, classification, line)
+def identifySpecialTokens(str, line):
+	for token in relational_operators_2 + assignment:
+		# indices = [ind for ind, x in enumerate(str) if x == i]
+		if token in str:
+			str = str.replace(token, ' ')
+			writeInTable((token, "Operator", line))
+			return str
+	return str
+
 # print "Is Token: ", isToken(number_test)
+# writeInTable(isToken(number_test))
 
 #read file, split by line and put in a string
 with open(sys.argv[1], 'r') as my_file:
@@ -104,12 +124,21 @@ file = removeTrash(file)
 #split file by lines
 list_file = file.splitlines()
 print list_file
-token_test = spaceSimpleOperator(token_test, delimiters)
-print token_test
+# token_test = spaceSimpleOperator(token_test, delimiters)
+# print "Token: ", token_test
+# token_test = identifySpecialTokens(token_test, '1')
+# print "Token: ", token_test
 # insertRelationalSpace(token_test)
+
 #get the number of lines
 print "-------------->Lines:", len(list_file)
+for index, line in enumerate(list_file):
+	# print line
+	list_file[index] = identifySpecialTokens(line, str(index))
+	list_file[index] = spaceSimpleOperator(list_file[index], delimiters + relational_operators + 
+										   aditive_operators + multiplicative_operators)
 
-# print list_file
-# for line in list_file:
-	# print line.split()
+for index, line in enumerate(list_file):
+	print list_file[index]
+
+print list_file
