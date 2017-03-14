@@ -22,9 +22,8 @@ special_operators = ['or', 'and']
 #defining dictionary with toke type (key) and token list (value)
 token_type = {'Key Word': key_words,
 		  'Delimiter': delimiters,
-		  'Assignment': assignment,
 		  'Operator': relational_operators + relational_operators_2 + 
-		  			  aditive_operators + multiplicative_operators + special_operators
+		  			  aditive_operators + multiplicative_operators + special_operators + assignment
 		  # 'Relational Operator': relational_operators,
 		  # 'Aditive Operator': aditive_operators,
 		  # 'Multiplicative Operator': multiplicative_operators,
@@ -95,26 +94,33 @@ def spaceSimpleOperator(str, token_list):
 		for ap in range(str.count(i)):
 			indices = [ind for ind, x in enumerate(str) if x == i]
 			if indices:
+				right_test = ''
+				left_test = ''
 				aux = indices[ap]
-				str = str[:aux] + ' ' + str[aux:]
-				str = str[:aux+2] + ' ' + str[aux+2:]
+				if aux+1 <= len(str)-1:
+					# print 'ap->', ap
+					right_test = str[aux] + str[aux+1]
+				if aux-1 >= str.index(str[0]):
+					left_test = str[aux-1] + str[aux]
+					print 'left_test--------->', left_test
+				
+				if any(right_test in s for s in relational_operators_2 + assignment):
+					print 'right_test->', right_test
+					str = str[:aux] + ' ' + str[aux:]
+					str = str[:aux+3] + ' ' + str[aux+3:]
+				elif any(left_test in s for s in relational_operators_2 + assignment):
+					print 'left_test->', left_test
+					str = str[:aux-1] + ' ' + str[aux-1:]
+					str = str[:aux] + ' ' + str[aux:]
+				else:
+					print 'aux->', aux
+					str = str[:aux] + ' ' + str[aux:]
+					str = str[:aux+2] + ' ' + str[aux+2:]
 	return str			
-
-#function for identify special tokens, remove and return a new string.
-#And write in a table (token, classification, line)
-def identifySpecialTokens(str, line):
-	for token in relational_operators_2 + assignment:
-		# indices = [ind for ind, x in enumerate(str) if x == i]
-		if token in str:
-			str = str.replace(token, ' ')
-			writeInTable((token, "Operator", line))
-			return str
-	return str
 
 #function responsible for make the analyse of the input file, receive a list of all lines
 def lexicalAnalysis(list_file):
 	for index, line in enumerate(list_file):
-		list_file[index] = identifySpecialTokens(line, str(index + 1))
 		list_file[index] = spaceSimpleOperator(list_file[index], delimiters + relational_operators + 
 											   aditive_operators + multiplicative_operators)
 
@@ -137,9 +143,9 @@ file = removeTrash(file)
 #split file by lines
 list_file = file.splitlines()
 
-# print list_file
+print list_file
 lexicalAnalysis(list_file)
-# print list_file
+print list_file
 
 #DEBUG PRINTS
 # #get the number of lines
