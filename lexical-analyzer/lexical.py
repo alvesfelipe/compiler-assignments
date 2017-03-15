@@ -100,8 +100,7 @@ def spaceSimpleOperator(str, token_list):
 					str = str[:aux] + ' ' + str[aux:]
 					str = str[:aux+3] + ' ' + str[aux+3:]
 				elif any(left_test in s for s in relational_operators_2 + assignment):
-					str = str[:aux-1] + ' ' + str[aux-1:]
-					str = str[:aux] + ' ' + str[aux:]
+					pass
 				else:
 					str = str[:aux] + ' ' + str[aux:]
 					str = str[:aux+2] + ' ' + str[aux+2:]
@@ -132,9 +131,9 @@ file = removeTrash(file)
 #split file by lines
 list_file = file.splitlines()
 
-print list_file
+# print list_file
 lexicalAnalysis(list_file)
-print list_file
+# print list_file
 
 #DEBUG PRINTS
 # number_test = 'aasdf123sd'
