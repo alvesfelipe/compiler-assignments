@@ -41,6 +41,7 @@ def writeInTable(listTuple):
 	f.write(listTuple[0] + '\t' + listTuple[1] + '\t' + listTuple[2] + '\n')
 	f.close()
 
+#function for remove unused characters from file
 def removeTrash(str):
 	removed = str.replace('\t', '')
 	removed = re.sub(r'\{.*?\}', '', removed)
@@ -112,7 +113,7 @@ def spaceSimpleOperator(str, token_list):
 
 #function responsible for make the analyse of the input file, receive a list of all lines
 def lexicalAnalysis(list_file):
-	#remove old file
+	#remove old file before write a new lexical table
 	try:
 		os.remove(fileTable)
 	except OSError:
@@ -128,7 +129,7 @@ def lexicalAnalysis(list_file):
 			if aux is not None:
 				writeInTable(aux + (str(index + 1),))
 			else:
-				print "ERROR"
+				print "LEXICAL ERROR"
 				#remove old file
 				try:
 					os.remove(fileTable)
@@ -148,7 +149,6 @@ list_file = file.splitlines()
 
 # print list_file
 lexicalAnalysis(list_file)
-# print list_file
 
 #DEBUG PRINTS
 # number_test = 'aasdf123sd'
